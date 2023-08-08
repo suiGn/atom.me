@@ -1,0 +1,27 @@
+{
+  "name": "this.atom",
+  "version": "1.0.3",
+  "description": "this.atom Wrapper for Electron",
+  "main": "atom.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/suiGn/this.atom.git"
+  },
+  "keywords": [
+    "opens",
+    "html",
+    "and",
+    "javascript",
+    "components",
+    "like",
+    "atoms."
+  ],
+  "author": "suiGN",
+  "license": "MIT",
+  "dependencies": {
+    "electron": "^25.4.0"
+  }
+}
