@@ -1,4 +1,5 @@
 // electron.js
+/*
 const { app, BrowserWindow, ipcMain } = require('electron');
 
 // Function to create a new Electron window (electron)
@@ -20,3 +21,4 @@ function createElectronWindow(width, height, viewFile, frame, transparent, nodeI
 }
 
 module.exports = createElectronWindow;
+*/
