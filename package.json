@@ -1,6 +1,6 @@
 {
   "name": "this.atom",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "this.atom Wrapper for Electron",
   "main": "atom.js",
   "scripts": {
@@ -22,6 +22,5 @@
   "author": "suiGN",
   "license": "MIT",
   "dependencies": {
-    "electron": "^25.4.0"
   }
 }
