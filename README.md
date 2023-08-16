@@ -1,5 +1,46 @@
 <img src="./_._.svg" alt="SVG Image" width="123" height="123" style="width123px; height:123px;">
 
+# this.atom
+
+```bash
+npm i this.atom
+```
+
+
+
+# Quick Start
+
+1. Clone this App Demo Repository
+
+  ```bash
+  git clone https://github.com/suiGn/.me.git
+  ```
+2. Navigate to the Project Directory
+
+  ```bash
+  cd .me
+  ```
+3. Install Dependencies
+You can use either Yarn or npm to install the necessary dependencies.
+
+Using Yarn:
+
+```bash
+yarn install
+```
+
+Using npm:
+
+```bash
+npm install
+```
+
+4. Launch the Application
+
+  ```bash
+  npx electron index.js
+  ```
+
 Let's break down the main concept:
 
 1. **this.atom Package**:

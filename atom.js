@@ -1,30 +1,71 @@
 //atom.js
 const { app, BrowserWindow } = require('electron');
+const { ipcMain } = require('electron');
 
 class Atom {
     constructor() {
         this.electrons = {};
-        // Setting up the main process lifecycle inside the Atom constructor
+        this.isAppReady = false;
+        this._setupIPC();
+        this.dataStore = {};
+    }
+
+    setObject(key, object) {
+        this.dataStore[key] = object;
+    }
+
+    getObject(key) {
+        return this.dataStore[key];
+    }
+
+    start() {
+        // Now we move all app lifecycle events inside this method.
         app.on('ready', this.onAppReady.bind(this));
         app.on('window-all-closed', this.onAllWindowsClosed.bind(this));
         app.on('activate', this.onAppActivate.bind(this));
+
+        app.whenReady().then(() => {
+            this.isAppReady = true;
+        });
+
+        // Starting the Electron app.
+        app.emit('ready');
     }
 
     onAppReady() {
-            this.isAppReady = true;
+        this.isAppReady = true;
+    }
+
+    _setupIPC() {
+        ipcMain.on('getMeObject', (event, arg) => {
+            if (this.me) {
+                event.sender.send('meObjectReply', this.me);
+            } else {
+                // Handle the case where 'me' is not yet initialized or available.
+                event.sender.send('meObjectError', 'Me object not available.');
+            }
+        });
+    }
+
+     // Method to set any object. This can be called from the main process.
+     setObject(key, obj) {
+        if (!this.dataStore) {
+            this.dataStore = {};
+        }
+        this.dataStore[key] = obj;
     }
 
     onAllWindowsClosed() {
-      if (process.platform !== 'darwin') {
-          app.quit();
-      }
-  }
+        if (process.platform !== 'darwin') {
+            app.quit();
+        }
+    }
 
-  onAppActivate() {
-      if (this.listElectrons().length === 0) {
-          this.createElectron();
-      }
-  }
+    onAppActivate() {
+        if (this.listElectrons().length === 0) {
+            this.createElectron();
+        }
+    }
 
   createElectron() {
     if (!app.isReady()) {
