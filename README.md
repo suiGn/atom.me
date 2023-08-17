@@ -6,7 +6,10 @@
 npm i this.atom
 ```
 
-
+Local WebSockets:
+Your Electron app can run a local WebSocket server.
+The browser extension can then connect to this local WebSocket server to communicate in real-time with your Electron app.
+Aiming for dynamic web interfaces on the go.
 
 # Quick Start
 
