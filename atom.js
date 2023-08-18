@@ -14,10 +14,23 @@ class Atom {
   }
 
   createElectron(content) {
+    const fs = require('fs');
+    const path = require('path');
     const electron = require.resolve('.bin/electron');
     // Spawn a new Electron process
-    const child = spawn(electron, ['./electronGenerator.js', content]); 
-    this.electronProcesses.push(child);
+    let electronGeneratorPath = path.resolve(__dirname, '../this.atom/electronGenerator.js');
+    // Check if the file exists at the standalone path
+    if (!fs.existsSync(electronGeneratorPath)) {
+        // If not, try the node_modules path
+        electronGeneratorPath = path.resolve(__dirname, './node_modules/this.atom/electronGenerator.js');
+    }
+    // Check again to make sure the path is correct. If not, log an error
+    if (!fs.existsSync(electronGeneratorPath)) {
+        console.error("Unable to find electronGenerator.js. Ensure 'this.atom' is correctly set up.");
+        return;
+    }
+    
+    const child = spawn(electron, [electronGeneratorPath, content]);
     child.stdout.on('data', (data) => {
       console.log(`stdout: ${data}`);
     });
