@@ -1,5 +1,7 @@
 const Atom = require('./atom.js');
 const atomInstance = new Atom();
-// Start Electron with the content
-//const content = './atom-ui.html';
-atomInstance.createElectron();
+const electron1 = atomInstance.createElectron('./atom-ui.html');
+electron1.send('some-message', { data: 'Hello, Electron 1!' });
+
+const electron2 = atomInstance.createElectron('./atom-ui.html');
+electron2.send('another-message', { data: 'Hello, Electron 2!' });
