@@ -23,8 +23,13 @@ const atom2 = new Atom();
 This allows you to manage multiple sets of Electron windows under different atom instances.
 
 1. **Electron as Worker Nodes**: Each Electron process can be seen as a worker node that performs some kind of computation. The exact nature of this computation can be dynamic and based on the task you want that Electron instance to perform.
+
 2. **Atom as Manager/Orchestrator**: Your `atom` acts as a manager or an orchestrator, ensuring that Electron processes are efficiently utilized, maintained, and communication happens smoothly. It keeps track of all active Electron processes and can communicate or delegate tasks to them.
-3. **Inter-Atom Communication**: As you mentioned, Atoms can also talk to other Atoms. This is where things get interesting. If each Atom can communicate with other Atoms, then you're essentially building a network of manager nodes. They can share resources, balance loads, and collectively manage a large number of Electron processes.
+
+3. **Inter-Atom Communication**:  Atoms can also talk to other Atoms. This is where things get interesting. If each Atom can communicate with other Atoms, then we're essentially building a network of manager nodes. They can share resources, balance loads, and collectively manage a large number of Electron processes.
+
+   ​	<u>Node.js  manages `this.atom` instances, and these instances will spawn Electron processes when needed.</u>
+
 4. **Neural Network Analogy**: If you plan to extend this to function like a neural network, then each Atom can represent a neuron, with Electron processes acting as dendrites or synaptic connections. The communication between Electrons (and between Atoms) can be seen as the transmission of signals or information in the neural network. visit http://www.neurons.me
 
 plugging your atoms to neural networks.

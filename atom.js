@@ -1,8 +1,8 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
-
+const { spawn } = require('child_process');
 class Atom {
   constructor() {
     this.objects = {}; // For storing objects like 'me'
+    this.electronProcesses = []; // To keep track of the spawned Electron processes
   }
 
   setObject(key, obj) {
@@ -13,26 +13,23 @@ class Atom {
     return this.objects[key];
   }
 
-  startElectron(content) {
-    let mainWindow;
-
-    app.on('ready', () => {
-      mainWindow = new BrowserWindow();
-      mainWindow.loadFile(content); // Load the content
-
-      // IPC handler here
-      ipcMain.on('getMeObject', (event, arg) => {
-        const me = this.getObject('me');
-        if (me) {
-          event.sender.send('meObjectReply', me);
-        } else {
-          event.sender.send('meObjectError', 'Me object not available.');
-        }
-      });
+  createElectron(content) {
+    const electron = require.resolve('.bin/electron');
+    // Spawn a new Electron process
+    const child = spawn(electron, ['./electronGenerator.js', content]); 
+    this.electronProcesses.push(child);
+    child.stdout.on('data', (data) => {
+      console.log(`stdout: ${data}`);
     });
-
-    app.on('window-all-closed', () => {
-      app.quit();
+    child.stderr.on('data', (data) => {
+      console.error(`stderr: ${data}`);
+    });
+    child.on('close', (code) => {
+      console.log(`Electron process exited with code ${code}`);
+      const index = this.electronProcesses.indexOf(child);
+      if (index > -1) {
+        this.electronProcesses.splice(index, 1);
+      }
     });
   }
 }

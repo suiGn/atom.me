@@ -1,8 +1,7 @@
+//electronGenerator.js
 const { app, BrowserWindow, ipcMain } = require('electron');
 const Atom = require('./atom.js');
-
 let mainWindow;
-
 const atomInstance = new Atom();
 
 app.on('ready', () => {
