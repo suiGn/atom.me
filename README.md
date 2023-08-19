@@ -1,12 +1,79 @@
 <img src="./_._.svg" alt="SVG Image" width="123" height="123" style="width123px; height:123px;">
 
+
+
 # this.atom
+
 ```bash
 npm i this.atom
 ```
+
 **Dynamic Web Interfaces on the go.**
 
- Using React components within Electron applications has been a popular approach because React's component-based architecture meshes well with Electron's multi-process nature. To create customizable Electron interfaces "on the fly" through React components is the aim of this.atom. 
+## Atom & Electron: Manage Multiple Apps in a Modular Way
+
+Welcome to a new way of managing multiple Electron apps through a single system, inspired by the modular structures of atoms and electrons.
+
+### Introduction
+
+In the real world, an atom is a basic unit of matter, composed of protons, neutrons, and electrons. The electron orbits around the atom's nucleus. Drawing from this analogy, we're using the concept of `Atom` as a manager or control system that can spin up individual `Electron` processes. Each `Electron` represents a single app or interface.
+
+### Key Concepts
+
+1. **Atom**: This is our main control system. It is responsible for creating, managing, and controlling multiple Electron processes.
+2. **Electron**: An instance of an Electron app. Each Electron is independent and can run a different application. It is managed by the Atom.
+
+### Benefits
+
+- **Modularity**: Each app (Electron) is separated and independent. This separation ensures that issues in one app don't affect others.
+- **Flexibility**: The ability to run specific Electron processes for specific needs on-the-go. For instance, a Node app can decide when to run an Electron process based on requirements.
+- **Unified Control**: Using the Atom as a centralized control system, you can spin up, manage, and shut down multiple Electron apps seamlessly.
+- **Web-Ready**: Since Electron apps are HTML-based, this system is perfect for managing desktop versions of websites or web apps.
+
+### Getting Started
+
+1. **Installation**: Make sure you have Node.js and Electron installed.
+
+2. **Setting Up Apps**: Configure your available apps and their build paths in a central configuration.
+
+   ```js
+   // config.js
+   module.exports = {
+     apps: {
+       app1: './apps/app1/out/index.html',
+       app2: './apps/app2/out/index.html',
+       // ... any other apps you add in the future
+     }
+   };
+   ```
+
+3. **Spinning Up Electron Instances**:
+
+   Create an Atom instance and then create individual Electrons. Each Electron can render a different app.
+
+   ```js
+   const Atom = require('./atom.js');
+   const atomInstance = new Atom();
+   
+   const electron = atomInstance.createElectron();
+   electron.renderApp('app1');  // This will load app1
+   ```
+
+Fire the demo to see it running:
+
+```bash
+node demo.js
+```
+
+### Expanding & Customizing
+
+As you grow your system, you can add more methods to the `Electron` class for features like window size manipulation, developer tools toggling, and Electron plugin enabling.
+
+### Conclusion
+
+Managing multiple Electron apps has never been easier. With the Atom & Electron system, you get a modular, scalable, and flexible way of running various applications. Whether you're running different versions of a single app or entirely different apps, this system has got you covered.
+
+ **Using React components within Electron applications** has been a popular approach because React's component-based architecture meshes well with Electron's multi-process nature. To create customizable Electron interfaces "on the fly" through React components is the aim of this.atom. 
 
 Electron has main and renderer processes. For certain operations (like accessing the file system), to communicate between these processes Electron provides an IPC mechanism.
 React components can send and receive messages from Electron's main process using this IPC.
@@ -48,166 +115,7 @@ Let neurons.me neural networks decide that when it comes to load balancing using
 
    As with all machine learning models, there will be a period where the system might not be very efficient until it's been trained sufficiently. But over time, and with enough data, it has the potential to be a powerful load balancer.
 
-   Here's how to make this communication smooth:
-
-   1. **Creating an Electron Window:**
-
-      When you call `createElectron()`, an Electron process gets spawned and you store references to that process and the window's ID in `this.electronProcesses` and `this.electronWindows` respectively.
-
-   2. **Sending Data to the Renderer Process of a Specific Window:**
-
-      You can use the `Render` method which expects an index (to target a specific Electron window), a message channel, and data.
-
-      Example:
-
-      ```js
-      const atomInstance = new Atom();
-      atomInstance.createElectron();
-      atomInstance.Render(0, 'updateUI', { content: 'Hello Electron!' });
-      ```
-
-      Here, `updateUI` could be an IPC message channel which your Electron renderer process listens to. When it receives data on this channel, it can update the UI accordingly.
-
-      
-
-      **Continuing Communication:**
-
-      If you create more Electron windows and want to communicate with them, you'd simply adjust the index you pass to `Render` to target the correct window:
-
-      ```js
-      atomInstance.createElectron();
-      atomInstance.createElectron();
-      atomInstance.Render(1, 'updateUI', { content: 'Content for second window' });
-      ```
-
-   After creating an Electron window instance with `createElectron`, you communicate with its renderer process using the `Render` method and specifying which window (by index) you want to target. On the Electron side, you have listeners set up that can react to the incoming messages and update the UI or do other tasks accordingly.
-
-   1. **The Atom Instances**:
-
-      If you create:
-
-      ```
-      javascriptCopy code
-      const atomInstance = new Atom();
-      const atomInstance2 = new Atom();
-      const atomInstance3 = new Atom();
-      ```
-
-      Each of these instances, when invoking the `createElectron` method, will spawn a new Electron window, and each will load the `atom-ui.html` as their entry point.
-
-      
-
-      In essence, each `Atom` instance you create has the potential to manage its own **Electron window.** If you call `atomInstance.createElectron()`, `atomInstance2.createElectron()`, and `atomInstance3.createElectron()`, you'll end up with three Electron windows, each displaying the `atom-ui.html` content.
-
-   2. **The `Render` Method**:
-
-      ```js
-      atomInstance.Render(1, 'updateUI', { content: 'Content for second window' });
-      ```
-
-      - The `1` in the method call specifies which window you're targeting. This would be the index of the Electron window in the `this.electronWindows` array within your `Atom` instance.
-      - `'updateUI'` is the message channel you're sending. Your renderer process would be set up to listen for messages on this channel.
-      - `{ content: 'Content for second window' }` is the data you're sending through this channel. This could be anything — text, objects, arrays, etc.
-
-# Atoms
-
-When you call `atomInstance.createElectron()`, a new Electron window is spawned, and its window ID (or process ID, depending on your implementation) is stored in the `electronWindows` array within that particular `atomInstance`.
-
-The `1` in `atomInstance.Render(1, ...)` refers to the index of the `electronWindows` array within that specific `atomInstance`. It does NOT refer to a global count of all Electron windows spawned across all `Atom` instances.
-
-Here's a step-by-step breakdown:
-
-1. You create an instance of `Atom`:
-
-   ```js
-   const atomInstance = new Atom();
-   ```
-
-2. You spawn two Electron windows:
-
-   ```js
-   atomInstance.createElectron();  // This window gets an index of 0 in atomInstance's electronWindows array.
-   atomInstance.createElectron();  // This window gets an index of 1 in atomInstance's electronWindows array.
-   ```
-
-If you were to create a new instance of `Atom` (`atomInstance2` for instance), and call `createElectron()` on it, the Electron window spawned would have an index of `0` within `atomInstance2`'s `electronWindows` array. The two instances don't share or interfere with each other's internal state.
-
-This is why it's essential to keep track of which instance you're working with. Each `Atom` instance will maintain its own set of Electron windows and their respective indices.
-
-In Electron, a window is represented by the `BrowserWindow` class. Each `BrowserWindow` can contain one or more web pages (tabs). In most standard Electron applications, each `BrowserWindow` contains a single web page.
-
-However, with Electron's `webContents` API, you can implement tabbed browsing by managing multiple web contents within a single window. This is similar to how browsers like Chrome and Firefox allow you to have multiple tabs in a single window.
-
-1. **Tab Management**:
-   - Maintain a data structure that keeps track of all open tabs within a window. For example, this could be an array of `webContents` instances (where each `webContents` represents a tab).
-   - Each time a new tab is opened, you add its `webContents` to this array.
-   - Each time a tab is closed, you remove its `webContents` from this array.
-2. **Addressing Specific Tabs**:
-   - Extend your `Render` method (or create a separate method) to accept a `tabIndex` parameter.
-   - The `tabIndex` parameter would indicate which tab you want to target.
-   - You'd then use this `tabIndex` to look up the corresponding `webContents` and send the message to that tab.
-
-Example:
-
-```js
-Render(windowIndex, tabIndex, message, data) {
-    const windowId = this.electronWindows[windowIndex];
-    if (windowId) {
-        const windowTabs = this.windowTabs[windowIndex]; // Assuming windowTabs is an array of arrays.
-        const tab = windowTabs[tabIndex];
-
-        if (tab && !tab.isDestroyed()) {
-            tab.send(message, data);
-        } else {
-            console.error(`Tab at index ${tabIndex} doesn't exist or has been destroyed.`);
-        }
-    } else {
-        console.error(`Window at index ${windowIndex} doesn't exist.`);
-    }
-}
-```
-
-This method assumes that:
-
-- `this.windowTabs` is an array of arrays, where each inner array represents the tabs (`webContents`) of a window.
-- You manage the opening, closing, and ordering of tabs so that you can address them by index.
-
-So, your call to `Render` will look like:
-
-```
-javascriptCopy code
-atomInstance.Render(windowIndex, tabIndex, 'updateUI', { content: 'Content for specific tab in specific window' });
-```
-
-- `windowIndex`: This specifies which Electron window you're targeting.
-- `tabIndex`: This specifies which tab within that window you're targeting.
-- `message`: This is the channel or topic that the renderer process within the target tab is listening to.
-- `data`: This is the actual message or data you're sending to that tab.
-
-For example, if you want to target the second window you created and the first tab within that window, your function call would be:
-
-```js
-atomInstance.Render(1, 0, 'updateUI', { content: 'Content for first tab in second window' });
-```
-
-Keep in mind the following:
-
-1. **Arrays in JavaScript are zero-based**. So, the first item is at index `0`, the second item is at index `1`, and so on.
-
-2. You'll need a mechanism to manage the tabs for each window. In the example above, I presumed you might have a structure like `this.windowTabs` which is an array of arrays, where the outer array corresponds to each Electron window and the inner arrays contain the tabs for those windows.
-
    
-
-### Here's a general breakdown:
-
-- **Electron Window (`BrowserWindow`)**: Represents an actual window in the Electron application. This window can contain multiple web pages (tabs) but usually contains just one in standard setups.
-- **Tabs (web pages or `webContents`)**: These are the content loaded into a `BrowserWindow`. It could be local HTML files, remote web pages, etc. With the Electron API, you can create, navigate, and manage these web contents.
-
-In a typical Electron application, each `BrowserWindow` corresponds to one `webContents`, but with the proper setup, you can have a `BrowserWindow` manage multiple `webContents` instances, thus creating a tabbed interface.
-
-If you intend to create a multi-tab interface within a single Electron window, it might get a bit more complex. You would need to implement tab management (like adding, removing, switching tabs) and UI components to represent each tab.
-
-For most use cases and to keep things straightforward, Electron applications usually use separate windows (`BrowserWindow` instances) for different content, rather than tabs. But again, it's entirely possible to have a tabbed interface if that's what you're aiming for.
 
 # Quick Start
 
