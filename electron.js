@@ -33,6 +33,14 @@ class Electron {
     // Currently, there's no way to send the message to the spawned Electron process directly from here.
     console.warn(`To send messages to Electron processes, you'll need to set up some inter-process communication.`);
   }
+  renderApp(appName) {
+    const appPath = config.apps[appName];
+    if (appPath) {
+      this.window.loadFile(appPath);
+    } else {
+      console.error(`App "${appName}" not found in configuration.`);
+    }
+  }
 }
 
 module.exports = Electron;
