@@ -1,6 +1,6 @@
 {
   "name": "this.atom",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "this.atom Wrapper for Electron",
   "main": "atom.js",
   "scripts": {
@@ -23,6 +23,7 @@
   "license": "MIT",
   "dependencies": {
     "electron": "^25.5.0",
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.0",
+    "ws": "^8.13.0"
   }
 }
