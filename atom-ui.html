@@ -71,6 +71,7 @@
     </div>
     <div class="atom-text">this.atom</div>
     <script>
+        /*
         const { ipcRenderer } = require('electron');
         // Listen for the 'updateUI' message from the main process
         ipcRenderer.on('updateUI', (event, message) => {
@@ -81,7 +82,8 @@
         // If you want to send a message to the main process:
         // ipcRenderer.send('channelName', 'Your message or data here');
         // Establish the WebSocket connection
-const ws = new WebSocket('wss://your-websocket-server-url');
+*/
+const ws = new WebSocket('ws://localhost:8080');
 ws.onopen = () => {
     console.log('Connected to the WebSocket');
 };
