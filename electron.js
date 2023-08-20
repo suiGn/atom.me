@@ -1,6 +1,6 @@
 const { spawn } = require('child_process');
-const electronPath = require('electron');  // Make sure Electron is installed as a dependency
-const { ipcMain } = require('electron');   // Add this line for IPC
+const { ipcMain, electronApp } = require('electron');   // Add this line for IPC
+const path = require('path');
 
 class Electron {
   constructor(content, atomId) {
@@ -8,7 +8,8 @@ class Electron {
     this.setupProcess(content);
   }
   setupProcess(content) {
-    this.process = spawn(electronPath, ['./electronMain.js', content]);
+    const electronMainPath = path.join(__dirname, 'electronMain.js');
+    this.process = spawn(electronApp, [electronMainPath, content]);
 
     this.process.stdout.on('data', (data) => {
       console.log(`Electron ${this.id} stdout: ${data}`);

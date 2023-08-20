@@ -1,9 +1,6 @@
 <img src="./_._.svg" alt="SVG Image" width="123" height="123" style="width123px; height:123px;">
 
-
-
 # this.atom
-
 ```bash
 npm i this.atom
 ```
@@ -11,11 +8,9 @@ npm i this.atom
 **Dynamic Web Interfaces on the go.**
 
 ## Atom & Electron: Manage Multiple Apps in a Modular Way
-
 Welcome to a new way of managing multiple Electron apps through a single system, inspired by the modular structures of atoms and electrons.
 
 ### Introduction
-
 In the real world, an atom is a basic unit of matter, composed of protons, neutrons, and electrons. The electron orbits around the atom's nucleus. Drawing from this analogy, we're using the concept of `Atom` as a manager or control system that can spin up individual `Electron` processes. Each `Electron` represents a single app or interface.
 
 ### Key Concepts
@@ -33,7 +28,6 @@ In the real world, an atom is a basic unit of matter, composed of protons, neutr
 ### Getting Started
 
 1. **Installation**: Make sure you have Node.js and Electron installed.
-
 2. **Setting Up Apps**: Configure your available apps and their build paths in a central configuration.
 
    ```js
@@ -48,7 +42,6 @@ In the real world, an atom is a basic unit of matter, composed of protons, neutr
    ```
 
 3. **Spinning Up Electron Instances**:
-
    Create an Atom instance and then create individual Electrons. Each Electron can render a different app.
 
    ```js
@@ -66,11 +59,9 @@ node demo.js
 ```
 
 ### Expanding & Customizing
-
 As you grow your system, you can add more methods to the `Electron` class for features like window size manipulation, developer tools toggling, and Electron plugin enabling.
 
 ### Conclusion
-
 Managing multiple Electron apps has never been easier. With the Atom & Electron system, you get a modular, scalable, and flexible way of running various applications. Whether you're running different versions of a single app or entirely different apps, this system has got you covered.
 
  **Using React components within Electron applications** has been a popular approach because React's component-based architecture meshes well with Electron's multi-process nature. To create customizable Electron interfaces "on the fly" through React components is the aim of this.atom. 
@@ -114,8 +105,6 @@ Let neurons.me neural networks decide that when it comes to load balancing using
 2. **Outputs**: The neural network could then produce outputs indicating where a particular task should be routed for optimal performance.
 
    As with all machine learning models, there will be a period where the system might not be very efficient until it's been trained sufficiently. But over time, and with enough data, it has the potential to be a powerful load balancer.
-
-   
 
 # Quick Start
 
