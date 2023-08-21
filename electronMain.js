@@ -1,3 +1,4 @@
+//electronMain.js
 const { app, BrowserWindow, ipcMain } = require('electron');
 
 app.whenReady().then(() => {

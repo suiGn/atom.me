@@ -66,7 +66,7 @@ Managing multiple Electron apps has never been easier. With the Atom & Electron 
 
  **Using React components within Electron applications** has been a popular approach because React's component-based architecture meshes well with Electron's multi-process nature. To create customizable Electron interfaces "on the fly" through React components is the aim of this.atom. 
 
-Electron has main and renderer processes. For certain operations (like accessing the file system), to communicate between these processes Electron provides an IPC mechanism.
+**Electron** has main and renderer processes. For certain operations (like accessing the file system), to communicate between these processes Electron provides an IPC mechanism.
 React components can send and receive messages from Electron's main process using this IPC.
 
  `this.atom` module provides an object-oriented way of managing Electron windows and IPC (Inter-Process Communication) efficiently. The encapsulation of Electron’s core functionalities (like window management, IPC setup, and data storage) in such a manner can lead to cleaner code and improved scalability. It can be especially useful if you have different kinds of windows or data you wish to manage separately.
@@ -152,11 +152,23 @@ Let's break down the main concept:
 
 **2. Dynamic UI Building**: You can think of your UI components as atomic units. Each component is a self-contained entity with its own properties, methods, and events. When you want to build a dynamic UI, you pull the necessary components, stitch them together based on some logic or user input, and render them in an Electron process.
 
-**I decided upon React.** 
-At first glance, it seemed just like any other JS library - a new set of rules, a new syntax to learn, a new ecosystem to navigate. But, with every line of code, with every **component** I crafted, I felt the grip of an unspoken magic.
+1. **Atoms**:
+   - Each atom can communicate with many electrons.
+   - Atoms can also communicate with other atoms.
+2. **Electrons**:
+   - Each electron can communicate with one atom only.
 
-###### **The Components:** The Atoms of React
-React was different. Instead of looking at web pages as vast expanses of code, it dissected them into components. Like atoms in the world of matter, these components were the building blocks needed to create interfaces on the go with this.atom and electron. They were standalone, they were reusable, and they fit together with the precision of a jigsaw puzzle.
+### Relationship Visualization:
 
-###### The State: The Electrons in Orbit
-In traditional web design, capturing the change in user interactions was always a challenge. But with React’s state, it was like observing electrons in motion. When the state changed, the UI reacted instantly, updating only what was necessary. No refreshes, no reloads, just a fluid transformation.
+```text
+  Atom1    Atom2
+   |        |
+   |        |
+Electron1  Electron2
+   |        |
+Electron3  Electron4
+   |
+Electron5
+```
+
+Here, `Atom1` communicates with `Electron1`, `Electron3`, and `Electron5`, while `Atom2` communicates with `Electron2` and `Electron4`. Additionally, `Atom1` and `Atom2` can communicate with each other directly.

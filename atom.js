@@ -41,7 +41,7 @@ class Atom {
     }
   }
 
-  wsServerOn(port = 8080) {
+  wsServerOn(port = 8081) {
     // Create a new WebSocket server and bind it to the specified port
     this.wsServer = new WebSocket.Server({ port: port });
     this.wsServer.on('connection', (ws) => {
@@ -57,6 +57,15 @@ class Atom {
     });
     console.log(`WebSocket server started on port ${port}`);
   }
+
+  loadUrl(electronIndex, url) {
+    const electronInstance = this.electronInstances[electronIndex];
+    if (electronInstance) {
+        electronInstance.loadURL(url);
+    } else {
+        console.error(`Electron instance at index ${electronIndex} doesn't exist.`);
+    }
+}
 
 }  //end of class
 

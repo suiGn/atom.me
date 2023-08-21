@@ -1,12 +1,16 @@
+//electron.js
 const { spawn } = require('child_process');
+const { v4: uuidv4 } = require('uuid');
 const electronPath = require('electron');  // Make sure Electron is installed as a dependency
 const { ipcMain } = require('electron');   // Add this line for IPC
 const path = require('path');
 class Electron {
   constructor(content, atomId) {
     this.atomId = atomId; 
+    this.id = uuidv4();
     this.setupProcess(content);
   }
+
   setupProcess(content) {
     const electronMainPath = path.join(__dirname, 'electronMain.js');
     this.process = spawn(electronPath, [electronMainPath, content]);
@@ -28,9 +32,9 @@ class Electron {
   }
 
   send(message, data) {
-    // Currently, there's no way to send the message to the spawned Electron process directly from here.
-    console.warn(`To send messages to Electron processes, you'll need to set up some inter-process communication.`);
-  }
+    this.process.send({ message, data });
+    console.log(`send Open.`);
+}
   renderApp(appName) {
     const appPath = config.apps[appName];
     if (appPath) {
