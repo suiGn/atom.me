@@ -41,6 +41,7 @@ class Atom {
     }
   }
 
+  //implement port enviroment or if busy try + 1
   wsServerOn(port = 8081) {
     // Create a new WebSocket server and bind it to the specified port
     this.wsServer = new WebSocket.Server({ port: port });
