@@ -31,6 +31,12 @@ class Atom {
     return electronInstance;
   }
 
+  createAndLoadElectron(url) {
+    const electronInstance = this.createElectron(url);
+    electronInstance.loadURL(url);
+    return electronInstance;
+}
+
   Render(electronIndex, tabIndex, message, data) {
     const electronInstance = this.electronInstances[electronIndex];
     if (electronInstance) {

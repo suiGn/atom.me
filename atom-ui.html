@@ -4,110 +4,137 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>This.Atom</title>
-    <style>
+    <script src="https://threejs.org/build/three.js"></script>
+    <style id="styles">
+        :root {
+            --background-color: #1e2a38;
+            --text-color: #fff;
+            --accent-color: #4a90e2;
+        }
         body {
             margin: 0;
             padding: 0;
             display: flex;
-            flex-direction: column; /* Change display to column so that elements stack vertically */
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #1e2a38;
+            background-color: var(--background-color);
+            color: var(--text-color);
             font-family: Arial, sans-serif;
+            transition: background-color 0.3s, color 0.3s;
         }
         .atom {
-            width: 100px;
-            height: 100px;
+            width: 200px;
+            height: 200px;
             position: relative;
-            margin-bottom: 15px; /* Space between the atom art and the text */
+            margin-bottom: 15px;
         }
-        .electron-orbit {
-            border: 1px solid #4a90e2;
-            border-radius: 50%;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+        .search-bar, .toggle {
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            transition: color 0.3s;
         }
-        .orbit-1 {
-            width: 80px;
-            height: 80px;
+        input[type="text"], button {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            outline: none;
+            transition: background-color 0.3s, color 0.3s;
         }
-        .orbit-2 {
-            width: 60px;
-            height: 60px;
-            transform: translate(-50%, -50%) rotate(60deg);
+        input[type="text"] {
+            flex-grow: 1;
+            margin-right: 10px;
+            background-color: var(--accent-color);
+            color: var(--text-color);
         }
-        .orbit-3 {
-            width: 40px;
-            height: 40px;
-            transform: translate(-50%, -50%) rotate(120deg);
+        button {
+            cursor: pointer;
+            background-color: var(--accent-color);
+            color: var(--text-color);
         }
-        .nucleus {
-            width: 10px;
-            height: 10px;
-            background-color: #4a90e2;
-            border-radius: 50%;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-        /* Updated text styles for better visibility */
-        .atom-text {
-            color: #31405c;  /* Darker shade of the background color */
-            font-weight: 900; /* Extra bold */
-            font-size: 40px;  /* Larger font size */
+        .toggle {
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
-    <div class="atom">
-        <div class="electron-orbit orbit-1"></div>
-        <div class="electron-orbit orbit-2"></div>
-        <div class="electron-orbit orbit-3"></div>
-        <div class="nucleus"></div>
-    </div>
+    <div class="atom"></div>
     <div class="atom-text">this.atom</div>
+    <button onclick="createAndLoadElectron('http://yoururl.com')">Create and Load Electron</button>
+
+    <div class="search-bar">
+        <input type="text" id="url-input" placeholder="Enter URL"/>
+        <button onclick="pointToURL()">Go</button>
+    </div>
+    <div class="toggle" onclick="toggleMode()">Toggle Dark/Light Mode</div>
     <script>
-        /*
-        const { ipcRenderer } = require('electron');
-        // Listen for the 'updateUI' message from the main process
-        ipcRenderer.on('updateUI', (event, message) => {
-            // Here, you handle what you want to do with the message. 
-            // For this example, I'm just going to change the .atom-text content.
-            document.querySelector('.atom-text').textContent = message.content;
-        });
-        // If you want to send a message to the main process:
-        // ipcRenderer.send('channelName', 'Your message or data here');
-        // Establish the WebSocket connection
-*/
-const ws = new WebSocket('ws://localhost:8081');
-ws.onopen = () => {
-    console.log('Connected to the WebSocket');
-};
-ws.onerror = (error) => {
-    console.log(`WebSocket Error: ${error}`);
-};
-ws.onmessage = (event) => {
-    // Handle incoming messages
-    let message = JSON.parse(event.data);
-    if (message.type === "updateUI") {
-        document.querySelector('.atom-text').textContent = message.content;
-    }
-};
-ws.onclose = (event) => {
-    if (event.wasClean) {
-        console.log(`Closed cleanly, code=${event.code}, reason=${event.reason}`);
-    } else {
-        console.log('Connection died');
-    }
-};
+        let isDarkMode = true;
 
-// If you want to send a message through WebSocket:
-// ws.send(JSON.stringify({ type: 'yourMessageType', data: 'Your message or data here' }));
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(200, 200);
 
+        document.querySelector('.atom').appendChild(renderer.domElement);
+
+        const nucleus = new THREE.Mesh(
+            new THREE.SphereGeometry(1, 32, 32),
+            new THREE.MeshBasicMaterial({ color: 0xffffff })
+        );
+        scene.add(nucleus);
+        
+        createElectron(5, 0.5);
+        createElectron(8, -0.5);
+
+        camera.position.z = 10;
+
+        function createElectron(orbitRadius, speed) {
+            const electron = new THREE.Mesh(
+                new THREE.SphereGeometry(0.5, 32, 32),
+                new THREE.MeshBasicMaterial({ color: 0xffffff })
+            );
+            scene.add(electron);
+            const radiansPerFrame = speed * (Math.PI / 180);
+            let angle = 0;
+            function animate() {
+                requestAnimationFrame(animate);
+                electron.position.x = orbitRadius * Math.cos(angle);
+                electron.position.y = orbitRadius * Math.sin(angle);
+                angle += radiansPerFrame;
+            }
+            animate();
+        }
+
+        const animate = function () {
+            requestAnimationFrame(animate);
+            renderer.render(scene, camera);
+        };
+
+        animate();
+
+        function pointToURL() {
+    const urlInput = document.getElementById('url-input');
+    const url = urlInput.value;
+    // Assuming that the Atom instance is available globally
+    if(window.atomInstance) {
+        // Pass the index of the Electron instance and the URL
+        window.atomInstance.loadUrl(0, url);
+    }
+}
+        function toggleMode() {
+            const styles = document.getElementById('styles');
+            isDarkMode = !isDarkMode;
+            if (isDarkMode) {
+                styles.innerHTML = styles.innerHTML.replace('#ffffff', '#1e2a38').replace('#000000', '#ffffff');
+                nucleus.material.color.setHex(0xffffff);
+            } else {
+                styles.innerHTML = styles.innerHTML.replace('#1e2a38', '#ffffff').replace('#ffffff', '#000000');
+                nucleus.material.color.setHex(0x000000);
+            }
+        }
     </script>
+
 </body>
 </html>
