@@ -1,6 +1,6 @@
 {
   "name": "this.atom",
-  "version": "1.4.4",
+  "version": "1.4.5",
   "description": "this.atom Wrapper for Electron",
   "main": "atom.js",
   "scripts": {
