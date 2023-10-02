@@ -4,6 +4,7 @@
   "description": "this.atom Wrapper for Electron",
   "main": "atom.js",
   "scripts": {
+    "install": "node-pre-gyp install --fallback-to-build",
     "test": "test"
   },
   "repository": {
@@ -24,6 +25,12 @@
   "dependencies": {
     "electron": "^25.5.0",
     "uuid": "^9.0.0",
-    "ws": "^8.13.0"
+    "ws": "^8.13.0",
+    "node-pre-gyp": "^1.0.5"
+  },
+  "binary": {
+    "module_name": "atom_binary",
+    "module_path": "./lib/binding/",
+    "host": "https://your-binary-hosting-location/"
   }
 }
