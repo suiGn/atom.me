@@ -13,6 +13,45 @@ class Atom {
     this.wsServer = null;
   }
 
+  /*  ATOM INSTANCE METHODS
+----------------------------------------------------------------------------------
+  getById(id)
+    * Returns the Atom instance with the given id.
+----------------------------------------------------------------------------------
+    setObject(key, obj)
+    * Sets the object with the given key to the given object.
+----------------------------------------------------------------------------------
+    getOject(key)
+    * Returns the object with the given key.
+----------------------------------------------------------------------------------
+    augmentedRealityLayer(file)
+    * Creates an Electron instance with the given file and returns it.
+----------------------------------------------------------------------------------
+    createElectron(content)
+    * Creates an Electron instance with the given content and returns it.
+----------------------------------------------------------------------------------
+    createAndLoadElectron(url)
+    * Creates an Electron instance with the given url and returns it.
+----------------------------------------------------------------------------------
+    Render(electronIndex, tabIndex, message, data)
+    * Sends the given message and data to the Electron instance at the given index.
+----------------------------------------------------------------------------------
+    wsServerOn(port)
+    * Creates a WebSocket server on the given port.
+----------------------------------------------------------------------------------
+    loadUrl(electronIndex, url)
+    * Loads the given url in the Electron instance at the given index.
+----------------------------------------------------------------------------------
+    getElectronById(id)
+    * Returns the Electron instance with the given id.
+----------------------------------------------------------------------------------
+    getElectrons()
+    * Returns the array of Electron instances.
+----------------------------------------------------------------------------------
+    getElectronsCount()
+    * Returns the number of Electron instances. 
+---------------------------------------------------------------------------------*/
+
   static getById(id) {
     return Atom.instances[id];
   }
@@ -76,8 +115,6 @@ class Atom {
         console.error(`Electron instance at index ${electronIndex} doesn't exist.`);
     }
   }
-
-  // New methods:
   getElectronById(id) {
     return this.electrons.find(electron => electron.id === id);
   }
@@ -93,5 +130,4 @@ class Atom {
 }
 
 Atom.instances = {};
-
 module.exports = Atom;
