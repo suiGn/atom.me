@@ -31,5 +31,6 @@
     "module_name": "atom_binary",
     "module_path": "./lib/binding/",
     "host": "https://your-binary-hosting-location/"
-  }
+  },
+  "repoType": "NPM Package"
 }
