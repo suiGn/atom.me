@@ -7,10 +7,6 @@
     "test": "test",
     "start": "node ./src/atom.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/suiGn/this.atom.git"
-  },
   "keywords": [
     "opens",
     "html",
@@ -20,8 +16,6 @@
     "like",
     "atoms."
   ],
-  "author": "suiGN",
-  "license": "MIT",
   "dependencies": {
     "electron": "^25.5.0",
     "uuid": "^9.0.0",
@@ -32,5 +26,13 @@
     "module_path": "./lib/binding/",
     "host": "https://your-binary-hosting-location/"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/suiGn/this.atom.git"
+  },
+  "homepage": "https://www.npmjs.com/package/this.atom",
+  "docs": "https://suiGn.github.io/this.atom",
+  "author": "suiGN",
+  "license": "MIT",
   "repoType": "NPM Package"
 }
