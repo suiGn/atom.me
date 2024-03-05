@@ -18,21 +18,33 @@
         }
     },
     "better-docs": {
-        "name": "this.atom",
-        "title": "Docs for this.atom", 
-        "css": "style.css",
-        "trackingCode": "-",
-  "hideGenerator": false,
-        "navLinks": [
-            {
-                "label": "Github",
-                "href": "https://github.com/suiGn/this.atom"
-            },
-            {
-                "label": "App",
-                "href": "https://neurons.me"
-            }
-        ]
+      "name": "atom.me",
+      "title": "Atom.Me", 
+      "css": "style.css",
+      "trackingCode": "...",
+"hideGenerator": false,
+"navLinks": [
+  {
+    "label": "All.This",
+    "href": "https://suign.github.io/all.this/"
+},
+{
+  "label": "@Source",
+  "href": "https://suign.github.io/"
+},
+    {
+        "label": "Github",
+        "href": "https://github.com/suiGn/atom.me"
+    },
+    {
+        "label": "atom.me",
+        "href": "https://atom.me"
+    },
+    {
+      "label": "What is all.this?",
+        "href": "https://www.neurons.me/all-this"
     }
+]
+}
 }
 }
