@@ -2,7 +2,7 @@
 
 
 
-<img src="https://suign.github.io/assets/imgs/Neurons_PixelArt/bck/atom_me.png" alt="SVG Image" width="244">
+<img src="https://suign.github.io/assets/imgs/Neurons_PixelArt/bck/atom_me.png" alt="atom.me" width="244">
 
 # atom.me
 
