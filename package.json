@@ -1,7 +1,7 @@
 {
   "name": "atom.me",
   "version": "1.4.71",
-  "description": "this.atom Wrapper for Electron",
+  "description": "atom.me handles electrons.",
   "main": "./src/atom.js",
   "scripts": {
     "test": "test",
@@ -28,12 +28,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/suiGn/this.atom.git"
+    "url": "git+https://github.com/suiGn/atom.me.git"
   },
-  "homepage": "https://www.npmjs.com/package/this.atom",
-  "docs": "https://suiGn.github.io/this.atom",
+  "homepage": "atom.me",
+  "docs": "https://suiGn.github.io/atom.me",
   "author": "suiGN",
   "license": "MIT",
   "repoType": "NPM Package",
-  "category": "dataformatter"
+  "category": "utils"
 }
