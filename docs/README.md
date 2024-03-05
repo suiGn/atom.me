@@ -1,25 +1,33 @@
-<img src="./_._.svg" alt="SVG Image" width="123" height="123" style="width123px; height:123px;">
 
-# this.atom
+
+<img src="./src/atom_me_nobg.png" alt="SVG Image" width="203" height="203">
+
+# atom.me
+
 ```bash
-npm i this.atom
+npm i atom.me
 ```
 
 ### Atom & Electron: Manage Multiple Apps in a Modular Way
+
 Dynamic Web Interfaces on the go: Managing multiple Electron apps through a single system.
 
 ### Introduction
+
 We're using the concept of `Atom` as a manager or **control system** that can spin up individual `Electron` processes. Each `Electron` represents a single app or interface.
 
 ### Key Concepts
+
 1. **Atom**: main control system. It is responsible for creating, managing, and controlling multiple Electron processes.
 2. **Electron**: An instance of an Electron app. **Each Electron is independent** and can run a different application. It is managed by the Atom.
 
 # Getting Started
+
 1. **Installation**: Make sure you have Node.js and Electron installed.
+
 2. **Spinning Up Electron Instances**:
    Create an Atom instance and then create individual Electrons. Each Electron can render a different app.
-   
+
    ```js
    const Atom = require('./atom.js');
    const atomInstance = new Atom();
@@ -27,7 +35,6 @@ We're using the concept of `Atom` as a manager or **control system** that can sp
    const electron = atomInstance.createElectron();
    electron.renderApp('app1');  // This will load app1
    ```
-   
 
 Fire the demo to see it running:
 
@@ -36,6 +43,7 @@ node demo.js
 ```
 
 ### Expanding & Customizing
+
 As you grow your system, you can add more methods to the `Electron` class for features like window size manipulation, developer tools toggling, and Electron plugin enabling.
 
 1. **Setting Up Apps**: Configure your available apps and their build paths in a central configuration.
@@ -52,10 +60,13 @@ As you grow your system, you can add more methods to the `Electron` class for fe
    ```
 
 # This.Atom Structure.
+
  **EntryPoint:**  "main": "atom.js" ---> **atom.js** is the **Class Declaration.**
+
 ## **Properties:**
+
 - **Atom**: The main class representing an instance of an Atom which manages multiple Electron instances.
-   ***id:** A unique identifier for each Atom instance.* 
+  ***id:** A unique identifier for each Atom instance.* 
   ***objects:** An object for storing various key-value pairs.*
   ***electronInstances:** An array to store the Electron instances that are.*
    ***wsServer:** The instance of WebSocket Server for this Atom.*
@@ -72,6 +83,7 @@ class Atom {
 ```
 
 ## **Methods:**
+
 - **getById**: A static method to get an Atom instance by its ID.
 - **setObject** and **getObject**: Methods to set and get objects in the `objects` property.
 - **createElectron**: Creates a new Electron instance and stores it in `electronInstances`.
@@ -180,11 +192,13 @@ renderApp(appName) {
 ```
 
 ## Interaction:
+
 The Electron class interacts closely with the Atom class. Each Electron is managed by an Atom instance and communicates through IPC. It enables the dynamic loading of apps and seamless communication between different parts of the system.
 
 ----------------
 
 ## Usage:
+
  `this.atom` module provides an object-oriented way of managing Electron windows and IPC (Inter-Process Communication) efficiently. The encapsulation of Electron’s core functionalities (like window management, IPC setup, and data storage) in such a manner can lead to cleaner code and improved scalability. It can be especially useful if you have different kinds of windows or data you wish to manage separately.
 
 ```js
@@ -192,6 +206,7 @@ const Atom = require('this.atom');
 const atom1 = new Atom();
 const atom2 = new Atom();
 ```
+
 1. **Electron as Worker Nodes**: Each Electron process can be seen as a worker node that performs some kind of computation. The exact nature of this computation can be dynamic and based on the task you want that Electron instance to perform.
 
 2. **Atom as Manager/Orchestrator**: Your `atom` acts as a manager or an orchestrator, ensuring that Electron processes are efficiently utilized, maintained, and communication happens smoothly. It keeps track of all active Electron processes and can communicate or delegate tasks to them.
@@ -239,3 +254,10 @@ Here, `Atom1` communicates with `Electron1`, `Electron3`, and `Electron5`, while
 2. **Electrons**:
    - Each electron can communicate with one atom only.
 
+
+
+**By neurons.me**
+
+
+
+<img src="./_._.svg" alt="SVG Image" width="123" height="123" style="width123px; height:123px;">

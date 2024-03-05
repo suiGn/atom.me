@@ -123,6 +123,241 @@
 
 
 
+    <section>
+        <article><img src="./src/atom_me_nobg.png" alt="SVG Image" width="203" height="203">
+<h1>atom.me</h1>
+<pre class="prettyprint source lang-bash"><code>npm i atom.me
+</code></pre>
+<h3>Atom &amp; Electron: Manage Multiple Apps in a Modular Way</h3>
+<p>Dynamic Web Interfaces on the go: Managing multiple Electron apps through a single system.</p>
+<h3>Introduction</h3>
+<p>We're using the concept of <code>Atom</code> as a manager or <strong>control system</strong> that can spin up individual <code>Electron</code> processes. Each <code>Electron</code> represents a single app or interface.</p>
+<h3>Key Concepts</h3>
+<ol>
+<li><strong>Atom</strong>: main control system. It is responsible for creating, managing, and controlling multiple Electron processes.</li>
+<li><strong>Electron</strong>: An instance of an Electron app. <strong>Each Electron is independent</strong> and can run a different application. It is managed by the Atom.</li>
+</ol>
+<h1>Getting Started</h1>
+<ol>
+<li>
+<p><strong>Installation</strong>: Make sure you have Node.js and Electron installed.</p>
+</li>
+<li>
+<p><strong>Spinning Up Electron Instances</strong>:
+Create an Atom instance and then create individual Electrons. Each Electron can render a different app.</p>
+<pre class="prettyprint source lang-js"><code>const Atom = require('./atom.js');
+const atomInstance = new Atom();
+
+const electron = atomInstance.createElectron();
+electron.renderApp('app1');  // This will load app1
+</code></pre>
+</li>
+</ol>
+<p>Fire the demo to see it running:</p>
+<pre class="prettyprint source lang-bash"><code>node demo.js
+</code></pre>
+<h3>Expanding &amp; Customizing</h3>
+<p>As you grow your system, you can add more methods to the <code>Electron</code> class for features like window size manipulation, developer tools toggling, and Electron plugin enabling.</p>
+<ol>
+<li>
+<p><strong>Setting Up Apps</strong>: Configure your available apps and their build paths in a central configuration.</p>
+<pre class="prettyprint source lang-js"><code>// config.js
+module.exports = {
+  apps: {
+    app1: './apps/app1/out/index.html',
+    app2: './apps/app2/out/index.html',
+    // ... any other apps you add in the future
+  }
+};
+</code></pre>
+</li>
+</ol>
+<h1>This.Atom Structure.</h1>
+<p><strong>EntryPoint:</strong>  &quot;main&quot;: &quot;atom.js&quot; ---&gt; <strong>atom.js</strong> is the <strong>Class Declaration.</strong></p>
+<h2><strong>Properties:</strong></h2>
+<ul>
+<li><strong>Atom</strong>: The main class representing an instance of an Atom which manages multiple Electron instances.
+<em><strong>id:</strong> A unique identifier for each Atom instance.</em>
+<em><strong>objects:</strong> An object for storing various key-value pairs.</em>
+<em><strong>electronInstances:</strong> An array to store the Electron instances that are.</em>
+<em><strong>wsServer:</strong> The instance of WebSocket Server for this Atom.</em></li>
+</ul>
+<pre class="prettyprint source lang-js"><code>class Atom {
+  constructor() {
+ this.id = uuidv4();  //A unique identifier for each Atom instance.
+ this.objects = {}; //An object for storing various key-value pairs.
+ this.electronInstances = []; //An array to store the Electron instances spawned by this Atom.
+ Atom.instances[this.id] = this;
+ this.wsServer = null;  //The instance of WebSocket Server for this Atom.
+  }
+</code></pre>
+<h2><strong>Methods:</strong></h2>
+<ul>
+<li><strong>getById</strong>: A static method to get an Atom instance by its ID.</li>
+<li><strong>setObject</strong> and <strong>getObject</strong>: Methods to set and get objects in the <code>objects</code> property.</li>
+<li><strong>createElectron</strong>: Creates a new Electron instance and stores it in <code>electronInstances</code>.</li>
+<li><strong>createAndLoadElectron</strong>: Creates a new Electron instance, loads a URL into it and returns the instance.</li>
+<li><strong>Render</strong>: Sends a message to a specified Electron instance.</li>
+<li><strong>wsServerOn</strong>: Starts a WebSocket server on a specified port and sets up connection handlers.</li>
+<li><strong>loadUrl</strong>: Loads a URL in a specified Electron instance.</li>
+</ul>
+<p><strong>Electron</strong> has main and renderer processes. For certain operations (like accessing the file system), to communicate between these processes Electron provides an IPC mechanism:</p>
+<h1>Electron Class</h1>
+<p>The <code>electron.js</code> file is crucial for the proper functioning of <code>this.atom</code> as it contains the class definition for Electron instances. Each Electron instance represents a single app or interface that can run different applications.</p>
+<h3>File Path:</h3>
+<pre class="prettyprint source lang-javascript"><code>./electron.js
+</code></pre>
+<h3>Class Constructor:</h3>
+<p>When an instance of the Electron class is created, it is assigned an <code>atomId</code> and a unique <code>id</code>. The <code>setupProcess</code> method is then invoked with the provided content.</p>
+<pre class="prettyprint source lang-javascript"><code>constructor(content, atomId) {
+  this.atomId = atomId; 
+  this.id = uuidv4();
+  this.setupProcess(content);
+}
+</code></pre>
+<h2>Methods:</h2>
+<h3><strong>setupProcess(content):</strong></h3>
+<ul>
+<li>
+<p><strong>Purpose:</strong> Initializes an Electron process.</p>
+</li>
+<li>
+<p><strong>Behaviour:</strong> Listens to the standard output, standard error, and close events of the Electron process, and logs relevant data.</p>
+</li>
+<li>
+<p><strong>Parameter:</strong> <code>content</code> - The content to be loaded by the Electron process.</p>
+<pre class="prettyprint source lang-js"><code>  setupProcess(content) {
+    const electronMainPath = path.join(__dirname, 'electronMain.js');
+    this.process = spawn(electronPath, [electronMainPath, content]);
+    this.process.stdout.on('data', (data) => {
+      console.log(`Electron of atom:  ${this.atomId} stdout: ${data}`);
+    });
+    this.process.stderr.on('data', (data) => {
+      console.error(`Electron of atom: ${this.atomId} stderr: ${data}`);
+    });
+    this.process.on('close', (code) => {
+      console.log(`Electron process of atom:  ${this.atomId} exited with code ${code}`);
+   });
+  }
+</code></pre>
+</li>
+</ul>
+<h3><strong>setupIPC():</strong></h3>
+<ul>
+<li>
+<p><strong>Purpose:</strong> Establishes Inter-Process Communication (IPC) channels for the Electron instance.</p>
+</li>
+<li>
+<p><strong>Behaviour:</strong> Sets up listeners to handle messages specifically from the associated Electron window.</p>
+<pre class="prettyprint source lang-js"><code>setupIPC() {
+  ipcMain.on(`message-from-electron-${this.id}`, (event, data) => {
+    // Handle messages from this specific Electron window
+  });
+}
+</code></pre>
+</li>
+</ul>
+<h3><strong>send(message, data):</strong></h3>
+<ul>
+<li>
+<p><strong>Purpose:</strong> Facilitates communication with the Electron process.</p>
+</li>
+<li>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>message</code> - The type or nature of the message.</li>
+<li><code>data</code> - The actual content or payload of the message.</li>
+</ul>
+</li>
+<li>
+<p><strong>Behaviour:</strong> Sends structured messages to the Electron process and logs the action.</p>
+<pre class="prettyprint source lang-js"><code>send(message, data) {
+  this.process.send({ message, data });
+  console.log(`send Open.`);
+}
+</code></pre>
+</li>
+</ul>
+<h3><strong>renderApp(appName):</strong></h3>
+<ul>
+<li>**Purpose:**Loading an application based on a name identifier from a configuration (<code>config.apps[appName]</code>) is a custom behavior designed to suit the specific use-case of loading different applications.</li>
+<li><strong>Parameter:</strong> <code>appName</code> - The name identifier of the application to be loaded as per the configuration.</li>
+<li><strong>Behaviour:</strong> Based on the <code>appName</code> provided, it loads the corresponding application. If the <code>appName</code> is not found in the configuration, it logs an error message indicating the unavailability.</li>
+</ul>
+<pre class="prettyprint source lang-javascript"><code>renderApp(appName) {
+  const appPath = config.apps[appName];
+  if (appPath) {
+    this.window.loadFile(appPath);
+  } else {
+    console.error(`App &quot;${appName}&quot; not found in configuration.`);
+  }
+}
+</code></pre>
+<h2>Interaction:</h2>
+<p>The Electron class interacts closely with the Atom class. Each Electron is managed by an Atom instance and communicates through IPC. It enables the dynamic loading of apps and seamless communication between different parts of the system.</p>
+<hr>
+<h2>Usage:</h2>
+<p><code>this.atom</code> module provides an object-oriented way of managing Electron windows and IPC (Inter-Process Communication) efficiently. The encapsulation of Electron’s core functionalities (like window management, IPC setup, and data storage) in such a manner can lead to cleaner code and improved scalability. It can be especially useful if you have different kinds of windows or data you wish to manage separately.</p>
+<pre class="prettyprint source lang-js"><code>const Atom = require('this.atom');
+const atom1 = new Atom();
+const atom2 = new Atom();
+</code></pre>
+<ol>
+<li>
+<p><strong>Electron as Worker Nodes</strong>: Each Electron process can be seen as a worker node that performs some kind of computation. The exact nature of this computation can be dynamic and based on the task you want that Electron instance to perform.</p>
+</li>
+<li>
+<p><strong>Atom as Manager/Orchestrator</strong>: Your <code>atom</code> acts as a manager or an orchestrator, ensuring that Electron processes are efficiently utilized, maintained, and communication happens smoothly. It keeps track of all active Electron processes and can communicate or delegate tasks to them.</p>
+</li>
+<li>
+<p><strong>Inter-Atom Communication</strong>:  Atoms can also talk to other Atoms. This is where things get interesting. If each Atom can communicate with other Atoms, then we're essentially building a network of manager nodes. They can share resources, balance loads, and collectively manage a large number of Electron processes.</p>
+</li>
+<li>
+<p><strong>Neural Network Analogy</strong>: If you plan to extend this to function like a neural network, then each Atom can represent a neuron, with Electron processes acting as dendrites or synaptic connections. The communication between Electrons (and between Atoms) can be seen as the transmission of signals or information in the neural network. visit http://www.neurons.me</p>
+</li>
+</ol>
+<h1>Plugging Your Atoms to Neural Networks.</h1>
+<pre class="prettyprint source lang-bash"><code>npm install neurons.me
+</code></pre>
+<p><strong>Load Balancing</strong>: If you're distributing tasks across multiple Electron processes or even across multiple Atoms, you'll need strategies to balance the load effectively.</p>
+<p>Let neurons.me neural networks decide when it comes to load balancing, the neural network (especially if it's a kind of recurrent network or has feedback mechanisms) can be trained to allocate tasks efficiently:</p>
+<ol>
+<li>
+<p><strong>Inputs</strong>: These could be things like the current load of each Electron process, the nature of the incoming task, historical data about how long similar tasks have taken in the past, and so on.</p>
+</li>
+<li>
+<p><strong>Outputs</strong>: The neural network could then produce outputs indicating where a particular task should be routed for optimal performance.</p>
+<p>As with all machine learning models, there will be a period where the system might not be very efficient until it's been trained sufficiently. But over time, and with enough data, it has the potential to be a powerful load balancer.</p>
+</li>
+</ol>
+<h2>Relationship Visualization:</h2>
+<pre class="prettyprint source lang-text"><code>  Atom1 &lt;-------------> Atom2
+   | 											|
+   |       							 	|
+Electron1  						Electron2
+   ||     						  	||
+Electron3  						Electron4
+   ||
+Electron5
+</code></pre>
+<p>Here, <code>Atom1</code> communicates with <code>Electron1</code>, <code>Electron3</code>, and <code>Electron5</code>, while <code>Atom2</code> communicates with <code>Electron2</code> and <code>Electron4</code>. Additionally, <code>Atom1</code> and <code>Atom2</code> can communicate with each other directly.</p>
+<ol>
+<li><strong>Atoms</strong>:
+<ul>
+<li>Each atom can communicate with many electrons.</li>
+<li>Atoms can also communicate with other atoms.</li>
+</ul>
+</li>
+<li><strong>Electrons</strong>:
+<ul>
+<li>Each electron can communicate with one atom only.</li>
+</ul>
+</li>
+</ol>
+<p><strong>By neurons.me</strong></p>
+<img src="./_._.svg" alt="SVG Image" width="123" height="123" style="width123px; height:123px;"></article>
+    </section>
+
 
 
 

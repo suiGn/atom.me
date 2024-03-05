@@ -1,4 +1,6 @@
-<img src="./_._.svg" alt="SVG Image" width="123" height="123" style="width123px; height:123px;">
+
+
+<img src="./src/atom_me_nobg.png" alt="SVG Image" width="203" height="203">
 
 # atom.me
 
@@ -251,3 +253,11 @@ Here, `Atom1` communicates with `Electron1`, `Electron3`, and `Electron5`, while
    - Atoms can also communicate with other atoms.
 2. **Electrons**:
    - Each electron can communicate with one atom only.
+
+
+
+**By neurons.me**
+
+
+
+<img src="./_._.svg" alt="SVG Image" width="123" height="123" style="width123px; height:123px;">
