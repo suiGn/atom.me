@@ -1,6 +1,8 @@
 
 
-<img src="./src/atom_me_nobg.png" alt="SVG Image" width="203" height="203">
+
+
+<img src="https://suign.github.io/assets/imgs/Neurons_PixelArt/nobck/atom_me_nobackground.png" alt="SVG Image" width="244">
 
 # atom.me
 
