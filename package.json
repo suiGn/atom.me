@@ -1,6 +1,6 @@
 {
   "name": "atom.me",
-  "version": "1.4.71",
+  "version": "1.4.72",
   "description": "atom.me handles electrons.",
   "main": "./src/atom.js",
   "scripts": {
